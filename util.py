@@ -3,6 +3,8 @@ from random import choice
 import spacy
 nlp = spacy.load('en_core_web_sm')
 
+import re
+
 rules = {
     "saludos": "saludos",
     "negacion": "negacion",
