@@ -5,7 +5,7 @@ import re
 import os
 import csv
 from tqdm import tqdm
-import faiss
+# import faiss
 from nltk.translate.bleu_score import sentence_bleu
 
 from random import choice
