@@ -1,10 +1,17 @@
+import tensorflow as tf
+import numpy as np
+import pandas as pd
+import re
+import os
+import csv
+from tqdm import tqdm
+import faiss
+from nltk.translate.bleu_score import sentence_bleu
+
 from random import choice
 
 import spacy
 nlp = spacy.load('en_core_web_sm')
-
-import re
-import tensorflow as tf
 
 rules = {
     "saludos": "saludos",
