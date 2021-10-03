@@ -41,3 +41,45 @@ def generate_bigrams(sentence):
   example = sentence.text
   if(len(bigram_list) > 0): example = ' '.join(bigram_list)
   return example
+
+def final_func_1(question,biobert_tokenizer,question_extractor_model,gpt2_tokenizer,tf_gpt2_model):
+  answer_len=25
+  return give_answer(question,answer_len,biobert_tokenizer,question_extractor_model,gpt2_tokenizer,tf_gpt2_model)
+
+def give_answer(question,answer_len,biobert_tokenizer,question_extractor_model,gpt2_tokenizer,tf_gpt2_model):
+  preprocessed_question=preprocess(question)
+  question_len=len(preprocessed_question.split(' '))
+  truncated_question=preprocessed_question
+  if question_len>500:
+    truncated_question=' '.join(preprocessed_question.split(' ')[:500])
+  encoded_question= biobert_tokenizer.encode(truncated_question)
+  max_length=512
+  padded_question=tf.keras.preprocessing.sequence.pad_sequences(
+      [encoded_question], maxlen=max_length, padding='post')
+  question_mask=[[1 if token!=0 else 0 for token in question] for question in padded_question]
+  embeddings=question_extractor_model1({'question':np.array(padded_question),'question_mask':np.array(question_mask)})
+  gpt_input=preparing_gpt_inference_data(truncated_question,embeddings.numpy(),gpt2_tokenizer)
+  mask_start = len(gpt_input) - list(gpt_input[::-1]).index(4600) + 1
+  input=gpt_input[:mask_start+1]
+  if len(input)>(1024-answer_len):
+   input=input[-(1024-answer_len):]
+  gpt2_output=gpt2_tokenizer.decode(tf_gpt2_model.generate(input_ids=tf.constant([np.array(input)]),max_length=1024,temperature=0.7)[0])
+  answer=gpt2_output.rindex('`ANSWER: ')
+  return gpt2_output[answer+len('`ANSWER: '):]
+
+def preparing_gpt_inference_data(question,question_embedding,gpt2_tokenizer):
+  topk=20
+  scores,indices=answer_index.search(
+                  question_embedding.astype('float32'), topk)
+  q_sub=qa.iloc[indices.reshape(20)]
+  
+  line = '`QUESTION: %s `ANSWER: ' % (
+                        question)
+  encoded_len=len(gpt2_tokenizer.encode(line))
+  for i in q_sub.iterrows():
+    line='`QUESTION: %s `ANSWER: %s ' % (i[1]['question'],i[1]['answer']) + line
+    line=line.replace('\n','')
+    encoded_len=len(gpt2_tokenizer.encode(line))
+    if encoded_len>=1024:
+      break
+  return gpt2_tokenizer.encode(line)[-1024:]
