@@ -6,6 +6,7 @@ import logging
 from transformers import AutoTokenizer, TFAutoModel
 from transformers import GPT2Tokenizer,TFGPT2LMHeadModel
 import tensorflow as tf
+import pickle
 
 app = Flask(__name__)
 
