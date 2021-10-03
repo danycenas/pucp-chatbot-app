@@ -4,6 +4,7 @@ import spacy
 nlp = spacy.load('en_core_web_sm')
 
 import re
+import tensorflow as tf
 
 rules = {
     "saludos": "saludos",
