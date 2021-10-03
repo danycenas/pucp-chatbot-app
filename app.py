@@ -8,6 +8,8 @@ from transformers import GPT2Tokenizer,TFGPT2LMHeadModel
 import tensorflow as tf
 import pickle
 
+from util import return_answer
+
 app = Flask(__name__)
 
 # biobert_tokenizer = None
