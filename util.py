@@ -5,7 +5,7 @@ import re
 import os
 import csv
 from tqdm import tqdm
-# import faiss
+import faiss
 from nltk.translate.bleu_score import sentence_bleu
 
 from random import choice
@@ -19,6 +19,22 @@ rules = {
     "afirmación": "afirmación",
     "despedida": "despedida"
 }
+
+#preparing the faiss search
+qa=pd.read_pickle('./train_gpt_data.pkl')
+question_bert = qa["Q_FFNN_embeds"].tolist()
+answer_bert = qa["A_FFNN_embeds"].tolist()
+question_bert = np.array(question_bert)
+answer_bert = np.array(answer_bert)
+
+question_bert = question_bert.astype('float32')
+answer_bert = answer_bert.astype('float32')
+
+answer_index = faiss.IndexFlatIP(answer_bert.shape[-1])
+
+question_index = faiss.IndexFlatIP(question_bert.shape[-1])
+answer_index.add(answer_bert)
+question_index.add(question_bert)
 
 def predict_intent(sentence, count_vectorizer, model):
   vector = count_vectorizer.transform([ generate_bigrams(nlp(sentence)) ])
