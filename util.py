@@ -19,7 +19,7 @@ def generate_answer(utterance, utterances_examples):
   return answer
 
 def return_answer(sentence, count_vectorizer, model, rules, utterances_examples,biobert_tokenizer,question_extractor_model,gpt2_tokenizer,tf_gpt2_model):
-  intent = predict_intent(sentence, count_vectorizer, decision_tree_classifier)
+  intent = predict_intent(sentence, count_vectorizer, model)
   
   if intent == 'consulta_medica':
     answer = final_func_1(sentence,biobert_tokenizer,question_extractor_model,gpt2_tokenizer,tf_gpt2_model)
