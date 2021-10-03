@@ -38,14 +38,14 @@ def send_message():
     gpt2_tokenizer=GPT2Tokenizer.from_pretrained("gpt2")
     tf_gpt2_model=TFGPT2LMHeadModel.from_pretrained("./tf_gpt2_model_2_104_10000")
     # # Clasificacion de intenciones
-    # count_vectorizer = pickle.load(open("count_vectorizer.pickle", "rb"))
-    # decision_tree_classifier = pickle.load(open("decision_tree_classifier.pickle", "rb"))
-    # rules = pickle.load(open("rules.pickle", "rb"))
-    # utterances_examples = pickle.load(open("utterances_examples.pickle", "rb"))
-    # answer, intent = return_answer(message, count_vectorizer, decision_tree_classifier, rules, utterances_examples,
-    #                                biobert_tokenizer,question_extractor_model,gpt2_tokenizer,tf_gpt2_model) if message != 'Yakarta' else message
+    count_vectorizer = pickle.load(open("count_vectorizer.pickle", "rb"))
+    decision_tree_classifier = pickle.load(open("decision_tree_classifier.pickle", "rb"))
+    rules = pickle.load(open("rules.pickle", "rb"))
+    utterances_examples = pickle.load(open("utterances_examples.pickle", "rb"))
+    answer, intent = return_answer(message, count_vectorizer, decision_tree_classifier, rules, utterances_examples,
+                                   biobert_tokenizer,question_extractor_model,gpt2_tokenizer,tf_gpt2_model) if message != 'Yakarta' else message
 
-    answer = 'aaaa'
+    # answer = 'aaaa'
 
     response_text = { "message":  answer }
     return jsonify(response_text)
