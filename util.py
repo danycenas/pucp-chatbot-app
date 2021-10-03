@@ -1,5 +1,8 @@
 from random import choice
 
+import spacy
+nlp = spacy.load('en')
+
 rules = {
     "saludos": "saludos",
     "negacion": "negacion",
@@ -28,3 +31,13 @@ def return_answer(sentence, count_vectorizer, model, rules, utterances_examples,
     answer = generate_answer(utterance, utterances_examples)
 
   return answer, intent
+
+def generate_bigrams(sentence):
+  bigram_list = []
+  for token in sentence:
+    if(token.dep_ != 'ROOT' and token.dep_ != 'punct'):
+      bigram_list.append(token.head.text+'_'+token.text)
+  
+  example = sentence.text
+  if(len(bigram_list) > 0): example = ' '.join(bigram_list)
+  return example

@@ -8,7 +8,7 @@ from transformers import GPT2Tokenizer,TFGPT2LMHeadModel
 import tensorflow as tf
 import pickle
 
-from util import return_answer
+from util import *
 
 app = Flask(__name__)
 
