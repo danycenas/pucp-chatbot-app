@@ -20,22 +20,6 @@ rules = {
     "despedida": "despedida"
 }
 
-#preparing the faiss search
-qa=pd.read_pickle('./train_gpt_data.pkl')
-question_bert = qa["Q_FFNN_embeds"].tolist()
-answer_bert = qa["A_FFNN_embeds"].tolist()
-question_bert = np.array(question_bert)
-answer_bert = np.array(answer_bert)
-
-question_bert = question_bert.astype('float32')
-answer_bert = answer_bert.astype('float32')
-
-answer_index = faiss.IndexFlatIP(answer_bert.shape[-1])
-
-question_index = faiss.IndexFlatIP(question_bert.shape[-1])
-answer_index.add(answer_bert)
-question_index.add(question_bert)
-
 def predict_intent(sentence, count_vectorizer, model):
   vector = count_vectorizer.transform([ generate_bigrams(nlp(sentence)) ])
   
@@ -94,6 +78,23 @@ def give_answer(question,answer_len,biobert_tokenizer,question_extractor_model,g
   return gpt2_output[answer+len('`ANSWER: '):]
 
 def preparing_gpt_inference_data(question,question_embedding,gpt2_tokenizer):
+
+  #preparing the faiss search
+  qa=pd.read_pickle('./train_gpt_data.pkl')
+  question_bert = qa["Q_FFNN_embeds"].tolist()
+  answer_bert = qa["A_FFNN_embeds"].tolist()
+  question_bert = np.array(question_bert)
+  answer_bert = np.array(answer_bert)
+
+  question_bert = question_bert.astype('float32')
+  answer_bert = answer_bert.astype('float32')
+
+  answer_index = faiss.IndexFlatIP(answer_bert.shape[-1])
+
+  question_index = faiss.IndexFlatIP(question_bert.shape[-1])
+  answer_index.add(answer_bert)
+  question_index.add(question_bert)
+
   topk=20
   scores,indices=answer_index.search(
                   question_embedding.astype('float32'), topk)
