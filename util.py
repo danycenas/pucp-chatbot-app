@@ -60,7 +60,7 @@ def give_answer(question,answer_len,biobert_tokenizer,question_extractor_model,g
   padded_question=tf.keras.preprocessing.sequence.pad_sequences(
       [encoded_question], maxlen=max_length, padding='post')
   question_mask=[[1 if token!=0 else 0 for token in question] for question in padded_question]
-  embeddings=question_extractor_model1({'question':np.array(padded_question),'question_mask':np.array(question_mask)})
+  embeddings=question_extractor_model({'question':np.array(padded_question),'question_mask':np.array(question_mask)})
   gpt_input=preparing_gpt_inference_data(truncated_question,embeddings.numpy(),gpt2_tokenizer)
   mask_start = len(gpt_input) - list(gpt_input[::-1]).index(4600) + 1
   input=gpt_input[:mask_start+1]
