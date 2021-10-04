@@ -37,7 +37,7 @@ def send_message():
     answer, intent = return_answer(message, count_vectorizer, decision_tree_classifier, rules, utterances_examples,
                                    biobert_tokenizer,question_extractor_model,gpt2_tokenizer,tf_gpt2_model) if message != 'Yakarta' else message
 
-    answer = answer + "\n are you satisfied with the information provided?"
+    answer = answer + '\n are you satisfied with the information provided?'
 
     response_text = { "message":  answer }
     return jsonify(response_text)
