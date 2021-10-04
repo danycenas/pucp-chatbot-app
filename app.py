@@ -12,20 +12,9 @@ from util import *
 
 app = Flask(__name__)
 
-# biobert_tokenizer = None
-# question_extractor_model = None
-# gpt2_tokenizer = None
-# tf_gpt2_model = None
-
 @app.route('/')
 def index():
-#   biobert_tokenizer = AutoTokenizer.from_pretrained("cambridgeltl/BioRedditBERT-uncased")
-#   question_extractor_model=tf.keras.models.load_model('question_extractor_model_2_11')
-#   gpt2_tokenizer=GPT2Tokenizer.from_pretrained("gpt2")
-#   tf_gpt2_model=TFGPT2LMHeadModel.from_pretrained("./tf_gpt2_model_2_104_10000")
-
   return render_template('index.html')
-
 
 @app.route('/send', methods=['POST'])
 def send_message():
@@ -47,8 +36,6 @@ def send_message():
     utterances_examples = pickle.load(open("utterances_examples.pickle", "rb"))
     answer, intent = return_answer(message, count_vectorizer, decision_tree_classifier, rules, utterances_examples,
                                    biobert_tokenizer,question_extractor_model,gpt2_tokenizer,tf_gpt2_model) if message != 'Yakarta' else message
-
-    # answer = 'aaaa'
 
     response_text = { "message":  answer }
     return jsonify(response_text)
