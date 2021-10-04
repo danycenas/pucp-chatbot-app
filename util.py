@@ -36,6 +36,7 @@ def return_answer(sentence, count_vectorizer, model, rules, utterances_examples,
   
   if intent == 'consulta_medica':
     answer = final_func_1(sentence,biobert_tokenizer,question_extractor_model,gpt2_tokenizer,tf_gpt2_model)
+    answer = answer + '<br/>Are you satisfied with the information provided?'
   else:
     utterance = rules[intent]
     answer = generate_answer(utterance, utterances_examples)
