@@ -10,6 +10,9 @@ from nltk.translate.bleu_score import sentence_bleu
 
 from random import choice
 
+from transformers import AutoTokenizer, TFAutoModel
+from transformers import GPT2Tokenizer,TFGPT2LMHeadModel
+
 import spacy
 nlp = spacy.load('en_core_web_sm')
 
