@@ -85,7 +85,7 @@ def give_answer(question,answer_len,biobert_tokenizer,question_extractor_model,g
   input=gpt_input[:mask_start+1]
   if len(input)>(1024-answer_len):
    input=input[-(1024-answer_len):]
-  gpt2_output=gpt2_tokenizer.decode(tf_gpt2_model.generate(input_ids=tf.constant([np.array(input)]),max_length=1024,temperature=4.0)[0])
+  gpt2_output=gpt2_tokenizer.decode(tf_gpt2_model.generate(input_ids=tf.constant([np.array(input)]),max_length=1024,temperature=0.7)[0])
   answer=gpt2_output.rindex('`ANSWER: ')
   return gpt2_output[answer+len('`ANSWER: '):]
 
