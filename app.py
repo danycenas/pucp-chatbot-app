@@ -28,7 +28,7 @@ def send_message():
     biobert_tokenizer = AutoTokenizer.from_pretrained("cambridgeltl/BioRedditBERT-uncased")
     question_extractor_model=tf.keras.models.load_model('question_extractor_model_2_11')
     gpt2_tokenizer=GPT2Tokenizer.from_pretrained("gpt2")
-    tf_gpt2_model=TFGPT2LMHeadModel.from_pretrained("./tf_gpt2_model_2_104_10000")
+    tf_gpt2_model=TFGPT2LMHeadModel.from_pretrained("./tf_gpt2_model_2_2_114")
     # # Clasificacion de intenciones
     count_vectorizer = pickle.load(open("count_vectorizer.pickle", "rb"))
     decision_tree_classifier = pickle.load(open("decision_tree_classifier.pickle", "rb"))
