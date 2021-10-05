@@ -31,10 +31,18 @@ def generate_answer(utterance, utterances_examples):
   answer = choice(answers)
   return answer
 
-def return_answer(sentence, count_vectorizer, model, rules, utterances_examples,biobert_tokenizer,question_extractor_model,gpt2_tokenizer,tf_gpt2_model):
+#def return_answer(sentence, count_vectorizer, model, rules, utterances_examples,biobert_tokenizer,question_extractor_model,gpt2_tokenizer,tf_gpt2_model):
+def return_answer(sentence, count_vectorizer, model, rules, utterances_examples):
   intent = predict_intent(sentence, count_vectorizer, model)
   
   if intent == 'consulta_medica':
+
+    biobert_tokenizer = AutoTokenizer.from_pretrained("cambridgeltl/BioRedditBERT-uncased")
+    question_extractor_model=tf.keras.models.load_model('question_extractor_model_2_11')
+    gpt2_tokenizer=GPT2Tokenizer.from_pretrained("gpt2")
+    tf_gpt2_model=TFGPT2LMHeadModel.from_pretrained("./tf_gpt2_model_2_2_114")
+
+
     answer = final_func_1(sentence,biobert_tokenizer,question_extractor_model,gpt2_tokenizer,tf_gpt2_model)
     answer = answer + '<br/>Are you satisfied with the information provided?'
   else:
